@@ -25,6 +25,8 @@ nav {
     align-items: center; /* Alinea verticalmente */
     width: 100%; /* Asegúrate de que ocupe todo el ancho */
     padding: 1.5% 0; /* Ajusta el padding según sea necesario */
+    position: relative;
+    z-index: 10; /* Asegúrate de que esté encima del header */
 }
 
 ul {
@@ -96,10 +98,36 @@ header {
     width: 100%;
     background: url(../imagenes/fondo2.jpg);
     background-repeat: no-repeat;
-    background-size: cover;    
+    background-size: cover;
     background-position: center;
     height: 9em;
+    position: relative; /* Necesario para pseudo-elementos */
+    margin-top: 0; /* Ajusta este margen si es necesario para que el header no se superponga */
 }
+
+/* Sombras degradadas en el header */
+header::before,
+header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 20px; /* Ajusta el grosor del degradado */
+    z-index: 1;
+}
+
+/* Degradado desde la parte superior */
+header::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+}
+
+/* Degradado desde la parte inferior */
+header::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+}
+
 
 main {
     display: flex;
