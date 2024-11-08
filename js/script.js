@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert("¡Gracias por tu voto!");
                 // Aquí puedes agregar la lógica para enviar el voto al servidor utilizando AJAX.
             } else {
-                alert("Inicia sesión para poder votar");
+                alert("Inicia sesión como Visitante para poder votar");
             }
         });
     });

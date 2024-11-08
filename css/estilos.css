@@ -182,6 +182,7 @@ main {
     object-position: top;      /* Asegura que la imagen siga anclada arriba al hacer zoom */
 }
 
+
 #registro, #login, #admin {
     display: none; /* Oculta las secciones inicialmente */
 }

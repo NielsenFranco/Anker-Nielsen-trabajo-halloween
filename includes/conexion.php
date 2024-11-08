@@ -1,25 +1,18 @@
 <?php
-function conectar()
-{
-	global $con;
-	$con = mysqli_connect("localhost","root","","halloween");
-		/* comprobar la conexión */
-		if (mysqli_connect_errno()) 
-		{
-		    printf("Falló la conexión: %s\n", mysqli_connect_error());
-		    exit();
-		}
-			else
-			{
-				$con -> set_charset("utf8");
-				$ret=true;
-			}
-		
-	return $ret;
+
+$servername = "localhost"; 
+$username = "root";         
+$password = "";             
+$dbname = "halloween";      
+
+// Crear conexión
+$con = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($con->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
 }
-function desconectar()
-{
-	global $con;
-	mysqli_close($con);
-}
+
+// Establecer el conjunto de caracteres a UTF-8 (opcional)
+$con->set_charset("utf8");
 ?>
