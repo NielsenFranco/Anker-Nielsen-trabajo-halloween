@@ -1,41 +1,54 @@
 <?php
+
 session_start();
-include("includes/conexion.php");
+include("../includes/conexion.php");
+
+header("Content-Type: application/json");
+
+$response = ["success" => false, "message" => ""];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_SESSION['idusuario'])) {
+    if (!$con) {
+        $response["message"] = "Error de conexión a la base de datos.";
+        echo json_encode($response);
+        exit();
+    }
+
+    if (isset($_SESSION['idusuario']) && $_SESSION['idrol'] == 2) {
         $disfraz_id = $_POST['iddisfraz'];
         $usuario_id = $_SESSION['idusuario'];
 
-        // Verificar si el usuario ya ha votado por este disfraz
         $checkQuery = "SELECT * FROM votaciones WHERE idusuario = ? AND iddisfraz = ?";
-        $stmt = $conn->prepare($checkQuery);
+        $stmt = $con->prepare($checkQuery);
         $stmt->bind_param("ii", $usuario_id, $disfraz_id);
         $stmt->execute();
         $checkResult = $stmt->get_result();
 
         if ($checkResult->num_rows > 0) {
-            $_SESSION['message'] = "¡Ya has votado por este disfraz!";
+            $response["message"] = "¡Ya has votado por este disfraz!";
         } else {
-            // Registrar el voto
             $insertQuery = "INSERT INTO votaciones (idusuario, iddisfraz) VALUES (?, ?)";
-            $stmt = $conn->prepare($insertQuery);
+            $stmt = $con->prepare($insertQuery);
             $stmt->bind_param("ii", $usuario_id, $disfraz_id);
 
             if ($stmt->execute()) {
-                $_SESSION['message'] = "¡Gracias por tu voto!";
+                $response["success"] = true;
+                $response["message"] = "¡Gracias por tu voto!";
             } else {
-                $_SESSION['message'] = "Hubo un error al registrar tu voto. Inténtalo de nuevo.";
+                $response["message"] = "Hubo un error al registrar tu voto. Inténtalo de nuevo.";
             }
         }
 
         $stmt->close();
     } else {
-        $_SESSION['message'] = "Debes iniciar sesión para votar.";
+        $response["message"] = "Debes iniciar sesión para votar.";
     }
 
-    $conn->close();
-    header("Location: index.php");
-    exit();
+    $con->close();
+} else {
+    $response["message"] = "Método de solicitud no permitido.";
 }
+
+echo json_encode($response);
+exit();
 ?>
