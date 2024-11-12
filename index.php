@@ -39,7 +39,7 @@ include("includes/conexion.php");
     </nav>
 
     <header>
-        <h1>Concurso de disfraces de Halloween</h1>
+        <h1 class="marquee">Bienvenidos al concurso de disfraces de Halloween</h1>
     </header>
 
     <main>
